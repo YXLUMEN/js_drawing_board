@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh_cn">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" href="style.css">
+    <title>Canvas画板</title>
+</head>
+<body>
+<div class="base-alert-box"></div>
+<h1>Hello! 欢迎使用画板！👋</h1>
+<div id="action-bar">
+    <input type="color" id="color-panel" title="选择颜色" value="#000000">
+
+    <div class="base-range-wrapper">
+        <input type="range" id="alphaSlider" title="透明度" min="0" max="1" step="0.01" value="1">
+        <input type="range" id="brushSize" title="画笔大小" min="1" max="50" value="5">
+    </div>
+
+    <button class="base-button-style-2" id="clear-canvas" title="清除画布 (Ctrl+Shift+C)">🧹 清除</button>
+    <button class="base-button-style-2" id="undoBtn" title="撤销 (Ctrl+Z)">↩️ 撤销</button>
+    <button class="base-button-style-2" id="redoBtn" title="重做 (Ctrl+Shift+Z)">↪️ 重做</button>
+
+    <div class="separator"></div>
+
+    <label for="canvasWidth"></label>
+    <input type="number" id="canvasWidth" class="base-input-style-2" placeholder="宽度" min="100" value="800">
+    <label for="canvasHeight"></label>
+    <input type="number" id="canvasHeight" class="base-input-style-2" placeholder="高度" min="100" value="600">
+    <button class="base-button-style-2" id="resize-canvas" title="调整画布尺寸">🖼️ 调整尺寸</button>
+
+    <div class="separator"></div>
+
+    <button class="base-button-style-2" id="export-png" title="导出为PNG (Ctrl+Shift+E)">🖼️ 导出图片</button>
+
+    <div class="separator"></div>
+
+    <button class="base-button-style-2" id="save-local" title="保存 (Ctrl+S)">💾 保存</button>
+    <div class="base-switch">
+        自动保存
+        <label>
+            <input type="checkbox" id="auto-save">
+            <span class="slider"></span>
+        </label>
+    </div>
+    <button class="base-button-style-2" id="clean-total" title="新建工作区">新建工作区</button>
+</div>
+
+<div class="tools-sidebar">
+    <ul id="tools-bar">
+        <li>
+            <button class="tool active" id="brush">
+                <span class="icon"><img src="./img/brush.svg" alt="" width="30"></span>
+                <span class="tooltip">刷子</span>
+            </button>
+        </li>
+        <li>
+            <button class="tool" id="eraser">
+                <span class="icon"><img src="./img/eraser.svg" alt="" width="30"></span>
+                <span class="tooltip">橡皮擦</span>
+            </button>
+        </li>
+        <li>
+            <button class="tool" id="color-picker">
+                <span class="icon"><img src="./img/color-picker.svg" alt="" width="30"></span>
+                <span class="tooltip">取色器</span>
+            </button>
+        </li>
+        <li>
+            <button class="tool" id="fill">
+                <span class="icon"><img src="./img/fill.svg" alt="" width="30"></span>
+                <span class="tooltip">油漆桶</span>
+            </button>
+        </li>
+        <li>
+            <button class="tool" id="line">
+                <span class="icon"><img src="./img/line.svg" alt="" width="30"></span>
+                <span class="tooltip">直线工具</span>
+            </button>
+        </li>
+        <li>
+            <button class="tool" id="rectangle">
+                <span class="icon"><img src="./img/rectangle.svg" alt="" width="30"></span>
+                <span class="tooltip">矩形工具</span>
+            </button>
+        </li>
+        <li>
+            <button class="tool" id="circle">
+                <span class="icon"><img src="./img/circle.svg" alt="" width="30"></span>
+                <span class="tooltip">圆形工具</span>
+            </button>
+        </li>
+    </ul>
+</div>
+
+<canvas id="temp-draw-canvas"></canvas>
+<canvas id="main-canvas"></canvas>
+</body>
+<script src="https://cdn.bootcdn.net/ajax/libs/pako/2.1.0/pako.min.js"></script>
+<script src="c_draw.js" type="module" async></script>
+</html>

@@ -1,0 +1,345 @@
+::-webkit-scrollbar {
+    display: none;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #f8f9fa;
+    --toolbar-height: 60px;
+    --sidebar-width: 200px;
+    --primary-color: #007bff;
+}
+
+#action-bar {
+    display: flex;
+    gap: 12px;
+    padding: 10px 15px;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    height: var(--toolbar-height);
+    align-items: center;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.tool-group {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    padding-right: 12px;
+    border-right: 1px solid #dee2e6;
+}
+
+/* 侧边栏容器 */
+.tools-sidebar {
+    & {
+        position: fixed;
+        left: 0;
+        top: var(--toolbar-height);
+        width: 50px; /* 收起时的宽度 */
+        height: 100vh;
+        background-color: #dee2e6;
+        overflow-x: hidden;
+        transition: width 0.3s ease;
+        z-index: 1000; /* 确保侧边栏在最上层 */
+    }
+
+    &:hover {
+        width: var(--sidebar-width); /* 展开后的宽度 */
+    }
+
+    ul {
+        list-style: none;
+        padding: 20px 0;
+        margin: 0;
+    }
+
+    ul li {
+        text-align: center;
+        margin: 15px 0;
+    }
+}
+
+/* 工具按钮 */
+.tool {
+    background: none;
+    border: none;
+    color: #000000;
+    width: 100%;
+    padding: 10px 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    outline: none;
+    transition: background 0.2s ease;
+}
+
+/* 工具按钮悬停效果 */
+.tool:hover {
+    background-color: #bec1c5;
+}
+
+/* 工具图标 */
+.tool .icon {
+    font-size: 24px;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+}
+
+/* 工具提示文本 */
+.tool .tooltip {
+    margin-left: 15px;
+    font-size: 16px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* 侧边栏展开时显示提示文本 */
+.tools-sidebar:hover .tool .tooltip {
+    opacity: 1;
+}
+
+/* 选中状态的工具按钮 */
+.tool.active {
+    background-color: #1abc9c;
+}
+
+input[type="color"] {
+    width: 40px;
+    height: 40px;
+    padding: 2px;
+    border: 2px solid #dee2e6;
+    border-radius: 6px;
+}
+
+/* 按钮样式覆盖 */
+.base-button-style-2 {
+    min-width: 40px;
+    max-width: 120px;
+    align-items: center;
+    gap: 6px;
+}
+
+button:disabled {
+    opacity: 0.6;
+    background: #6c757d;
+    cursor: not-allowed;
+}
+
+.base-input-style-2 {
+    margin: 0;
+    min-width: 80px;
+    max-width: 140px;
+}
+
+.base-range-wrapper {
+    min-width: 80px;
+    max-width: 200px;
+}
+
+.base-range-wrapper {
+    input[type="range"] {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 100%;
+        height: 8px;
+        background: #ddd;
+        border-radius: 5px;
+        outline: none;
+        opacity: 0.7;
+        transition: opacity .2s;
+    }
+
+    input[type="range"]:hover {
+        opacity: 1;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        background: #4CAF50;
+        cursor: pointer;
+        border-radius: 50%;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        transition: background .3s;
+    }
+
+    input[type="range"]::-webkit-slider-thumb:hover {
+        background: #45a049;
+    }
+
+    input[type="range"]::-moz-range-thumb {
+        width: 25px;
+        height: 25px;
+        background: #4CAF50;
+        cursor: pointer;
+        border-radius: 50%;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        transition: background .3s;
+    }
+
+    input[type="range"]::-moz-range-thumb:hover
+}
+
+canvas {
+    position: absolute;
+    top: var(--toolbar-height);
+    left: calc(var(--sidebar-width) / 2);
+    width: calc(100% - var(--sidebar-width));
+    height: calc(100% - var(--toolbar-height));
+    background: white;
+    cursor: crosshair;
+
+    touch-action: none; /* Prevents default touch actions */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.tools-sidebar:hover ~ #canvas {
+    left: 200px; /* 与展开的侧边栏宽度一致 */
+    width: calc(100% - 200px);
+}
+
+#main-canvas {
+    box-shadow: #b5b5b5 1px 0 5px;
+}
+
+#temp-draw-canvas {
+    display: none;
+    pointer-events: none;
+    background: transparent;
+    z-index: 1;
+}
+
+@media (max-width: 768px) {
+    #action-bar {
+        gap: 8px;
+        padding: 8px 12px;
+    }
+
+    button {
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    input[type="range"] {
+        width: 80px;
+    }
+
+    .tools-sidebar {
+        width: 40px;
+    }
+
+    .tools-sidebar:hover {
+        width: 150px;
+    }
+
+    .tool {
+        padding: 10px 5px;
+    }
+}
+
+.base-switch {
+    p {
+        height: 100%;
+        width: 80%;
+    }
+
+    label {
+        position: relative;
+        display: inline-block;
+        width: 50px;
+        height: 25px;
+    }
+
+    input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: 400ms;
+        border-radius: 25px;
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 21px;
+        width: 21px;
+        left: 2px;
+        bottom: 2px;
+        background-color: white;
+        transition: 400ms;
+        border-radius: 50%;
+    }
+
+    input:checked + .slider {
+        background-color: #1abc9c; /* #9c9c9c */
+    }
+
+    input:checked + .slider:before {
+        transform: translateX(25px);
+    }
+}
+
+.base-input-style-2 {
+    width: 300px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 300ms ease, box-shadow 300ms ease;
+}
+
+.base-input-style-2:focus {
+    border-color: #1abc9c;
+    box-shadow: 0 0 8px rgba(26, 188, 156, 0.2);
+    outline: none;
+}
+
+.base-button-style-2 {
+    width: 150px;
+    padding: 10px;
+    background-color: #1abc9c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 300ms ease, box-shadow 300ms ease;
+}
+
+.base-button-style-2:hover {
+    background-color: #16a085;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
